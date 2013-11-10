@@ -3,4 +3,13 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_default">14sp</dimen>
+    <dimen name="text_size_mid">20sp</dimen>
+
+    <dimen name="margin_bottom_text">10dp</dimen>
+
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_padding">0dp</dimen>
+
     </resources>
