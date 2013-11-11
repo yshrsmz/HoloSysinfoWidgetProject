@@ -3,6 +3,9 @@ package com.yslibrary.android.holosysinfowidget.ui;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Fragment;
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.yslibrary.android.holosysinfowidget.Consts;
 import com.yslibrary.android.holosysinfowidget.R;
-import com.yslibrary.android.holosysinfowidget.Util;
 import com.yslibrary.android.holosysinfowidget.dao.InternalStorage;
 import com.yslibrary.android.holosysinfowidget.dao.Ram;
 
@@ -27,6 +30,8 @@ public class MainActivity extends Activity {
         // get memory info
         ActivityManager activityManager = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
         Ram ram = new Ram(activityManager);
+
+        int availRamColor = Color.GREEN;
 
         long totalRam = ram.getTotalMem();
         long availableRam = ram.getAvailableMem();
@@ -42,6 +47,11 @@ public class MainActivity extends Activity {
         Log.v(TAG, "memoryInfo.availMem[MB]: " + (int)(availableRam / 1024 / 1024));
         TextView tvAvailableRam = (TextView)findViewById(R.id.var_available_ram);
         tvAvailableRam.setText(ram.getAvailableMemWithUnit());
+
+        if (ram.isLowMemory()) {
+            availRamColor = Color.RED;
+        }
+        tvAvailableRam.setTextColor(availRamColor);
 
         // progress bar for ram
         ProgressBar pbRam = (ProgressBar)findViewById(R.id.var_progress_ram);
@@ -60,6 +70,7 @@ public class MainActivity extends Activity {
 
     private void updateStorageInfo() {
         InternalStorage internalStorage = new InternalStorage();
+        int availStorageColor = Color.GREEN;
 
         long totalStorage = internalStorage.getTotalMem();
         long availableStorage = internalStorage.getAvailableMem();
@@ -76,6 +87,12 @@ public class MainActivity extends Activity {
         TextView tvAvailableStorage = (TextView)findViewById(R.id.var_available_storage);
         tvAvailableStorage.setText(internalStorage.getAvailableMemWithUnit());
 
+        if (internalStorage.isLowMemory()) {
+            availStorageColor = Color.RED;
+        }
+
+        tvAvailableStorage.setTextColor(availStorageColor);
+
         // progress bar for internalStorage
         ProgressBar pbInternalStorage = (ProgressBar)findViewById(R.id.var_progress_storage);
         pbInternalStorage.setProgress(iStoragePercentage);
@@ -88,6 +105,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sendBroadcast(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
+
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
@@ -114,6 +134,10 @@ public class MainActivity extends Activity {
 
         updateMemoryInfo();
         updateStorageInfo();
+
+        Log.d(TAG, "send intent to update widget");
+        Intent widgetUpdate = new Intent(Consts.SYSINFO_UPDATE);
+        sendBroadcast(widgetUpdate);
     }
 
 

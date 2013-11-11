@@ -25,7 +25,8 @@
 
         <receiver
             android:name=".widget.SysinfoWidget"
-            android:exported="false">
+            android:label="@string/widget_name">
+
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.yslibrary.android.holosysinfowidget.SYSINFO_UPDATE"/>
@@ -36,7 +37,6 @@
                 android:resource="@xml/widgetinfo" />
         </receiver>
 
-        <service android:name=".widget.SysinfoWidget$WidgetService"></service>
     </application>
 
 </manifest>

@@ -2,5 +2,5 @@
     android:initialLayout="@layout/sysinfo_widget"
     android:minHeight="70dp"
     android:minWidth="120dp"
-    android:resizeMode="vertical|horizontal"
+    android:resizeMode="none"
     android:updatePeriodMillis="0" />

@@ -17,6 +17,8 @@ public class MemoryBase {
 
     private int usedPercentage;
 
+    private boolean lowMemory;
+
     private static final int BYTE_SIZE = 1024;
 
     private static final String UNIT_B = "B";
@@ -112,4 +114,13 @@ public class MemoryBase {
     public void setUsedPercentage(int usedPercentage) {
         this.usedPercentage = usedPercentage;
     }
+
+    public boolean isLowMemory() {
+        return lowMemory;
+    }
+
+    public void setLowMemory(boolean lowMemory) {
+        this.lowMemory = lowMemory;
+    }
 }
+

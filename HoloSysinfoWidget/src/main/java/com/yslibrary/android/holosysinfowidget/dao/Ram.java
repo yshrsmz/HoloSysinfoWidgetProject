@@ -24,7 +24,7 @@ public class Ram extends MemoryBase {
         setUsedPercentage(getUsedPercentage(getTotalMem(), getAvailableMem()));
 
         this.threshold = memoryInfo.threshold;
-        this.lowMemory = memoryInfo.lowMemory;
+        setLowMemory(memoryInfo.lowMemory);
     }
 
     public long getThreshold() {
@@ -33,13 +33,5 @@ public class Ram extends MemoryBase {
 
     public void setThreshold(long threshold) {
         this.threshold = threshold;
-    }
-
-    public boolean isLowMemory() {
-        return lowMemory;
-    }
-
-    public void setLowMemory(boolean lowMemory) {
-        this.lowMemory = lowMemory;
     }
 }

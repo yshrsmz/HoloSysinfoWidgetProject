@@ -3,20 +3,19 @@ package com.yslibrary.android.holosysinfowidget.widget;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.yslibrary.android.holosysinfowidget.Consts;
 import com.yslibrary.android.holosysinfowidget.R;
 import com.yslibrary.android.holosysinfowidget.dao.InternalStorage;
 import com.yslibrary.android.holosysinfowidget.dao.Ram;
-import com.yslibrary.android.holosysinfowidget.ui.MainActivity;
 
 import java.util.Calendar;
 
@@ -25,11 +24,6 @@ import java.util.Calendar;
  */
 public class SysinfoWidget extends AppWidgetProvider {
     public static final String TAG = SysinfoWidget.class.getSimpleName();
-
-    public static final String EXTRA_APP_WIDGET_ID = "SysinfoWidgetId";
-
-    // custom intent name used by AlarmManager
-    private static final String SYSINFO_UPDATE = "com.yslibrary.android.holosysinfowidget.SYSINFO_UPDATE";
 
     private static final int UPDATE_INTERVAL = 60 * 1000;
 
@@ -41,7 +35,7 @@ public class SysinfoWidget extends AppWidgetProvider {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        //calendar.add(Calendar.SECOND, UPDATE_INTERVAL);
+        calendar.add(Calendar.SECOND, 1);
 
         alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), UPDATE_INTERVAL, createSysinfoUpdateIntent(context));
     }
@@ -84,7 +78,7 @@ public class SysinfoWidget extends AppWidgetProvider {
 
         Log.d(TAG, "#onReceive");
 
-        if (SYSINFO_UPDATE.equals(intent.getAction())) {
+        if (Consts.SYSINFO_UPDATE.equals(intent.getAction())) {
             Log.d(TAG, "Sysinfo update");
 
             ComponentName thisAppWidget = new ComponentName(context.getPackageName(), getClass().getName());
@@ -116,7 +110,7 @@ public class SysinfoWidget extends AppWidgetProvider {
     }
 
     private PendingIntent createSysinfoUpdateIntent(Context context) {
-        Intent intent = new Intent(SYSINFO_UPDATE);
+        Intent intent = new Intent(Consts.SYSINFO_UPDATE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         return pendingIntent;
@@ -125,13 +119,27 @@ public class SysinfoWidget extends AppWidgetProvider {
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Ram ram, InternalStorage is) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.sysinfo_widget);
 
+        int ramColor = Color.GREEN;
+        int internalStorageColor = Color.GREEN;
+
         // set ram info
         remoteViews.setTextViewText(R.id.widget_var_available_ram, ram.getAvailableMemWithUnit());
+
+        if (ram.isLowMemory()) {
+            ramColor = Color.RED;
+        }
+        remoteViews.setTextColor(R.id.widget_var_available_ram, ramColor);
+
         remoteViews.setTextViewText(R.id.widget_var_total_ram, ram.getTotalMemWithUnit());
 
         // set internal storage info
         remoteViews.setTextViewText(R.id.widget_var_available_storage, is.getAvailableMemWithUnit());
         remoteViews.setTextViewText(R.id.widget_var_total_storage, is.getTotalMemWithUnit());
+
+        if (is.isLowMemory()) {
+            internalStorageColor = Color.RED;
+        }
+        remoteViews.setTextColor(R.id.widget_var_available_storage, internalStorageColor);
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }

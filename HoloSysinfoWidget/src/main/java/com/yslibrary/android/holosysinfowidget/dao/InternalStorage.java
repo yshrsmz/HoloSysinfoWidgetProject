@@ -14,12 +14,16 @@ import java.io.File;
 public class InternalStorage extends MemoryBase {
     private static final String TAG = InternalStorage.class.getSimpleName();
 
+    private static final int INTERNAL_STORAGE_THRESHOLD_PERCENTAGE = 10;
+
     public InternalStorage() {
 
         setTotalMem(getTotalStorage(Environment.getDataDirectory()));
         setAvailableMem(getAvailableStorage(Environment.getDataDirectory()));
         setPercentage(getPercentage(getTotalMem(), getAvailableMem()));
         setUsedPercentage(getUsedPercentage(getTotalMem(), getAvailableMem()));
+
+        setLowMemory((getPercentage() < INTERNAL_STORAGE_THRESHOLD_PERCENTAGE));
     }
 
     public long getTotalStorage(File item) {
