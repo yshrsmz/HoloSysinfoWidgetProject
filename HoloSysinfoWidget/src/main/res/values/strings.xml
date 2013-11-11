@@ -17,4 +17,6 @@
     <string name="placeholder_ram_percentage">XX%</string>
     <string name="placeholder_storage">X.XXGB</string>
     <string name="placeholder_storage_percentage">XX%</string>
+
+    <string name="lbl_memory_used">&#160;used.</string>
 </resources>
