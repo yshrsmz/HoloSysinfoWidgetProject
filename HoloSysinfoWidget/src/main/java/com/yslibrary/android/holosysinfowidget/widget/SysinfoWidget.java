@@ -1,9 +1,12 @@
 package com.yslibrary.android.holosysinfowidget.widget;
 
+import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
@@ -11,7 +14,11 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.yslibrary.android.holosysinfowidget.R;
+import com.yslibrary.android.holosysinfowidget.dao.InternalStorage;
+import com.yslibrary.android.holosysinfowidget.dao.Ram;
 import com.yslibrary.android.holosysinfowidget.ui.MainActivity;
+
+import java.util.Calendar;
 
 /**
  * Created by yshrsmz on 2013/11/09.
@@ -21,9 +28,22 @@ public class SysinfoWidget extends AppWidgetProvider {
 
     public static final String EXTRA_APP_WIDGET_ID = "SysinfoWidgetId";
 
+    // custom intent name used by AlarmManager
+    private static final String SYSINFO_UPDATE = "com.yslibrary.android.holosysinfowidget.SYSINFO_UPDATE";
+
+    private static final int UPDATE_INTERVAL = 60 * 1000;
+
     @Override
     public void onEnabled(Context context) {
         Log.d(TAG, "#onEnabled");
+
+        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        //calendar.add(Calendar.SECOND, UPDATE_INTERVAL);
+
+        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), UPDATE_INTERVAL, createSysinfoUpdateIntent(context));
     }
 
     @Override
@@ -32,18 +52,53 @@ public class SysinfoWidget extends AppWidgetProvider {
         Log.d(TAG, "appWidgetIds.length: " + appWidgetIds.length);
         Log.d(TAG, "appWidgetIds[0]: " + appWidgetIds[0]);
 
-        for (int appWidgetId : appWidgetIds) {
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.sysinfo_widget);
-            Intent intent = new Intent(context, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent, 0);
+        ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        Ram ram = new Ram(am);
 
+        InternalStorage is = new InternalStorage();
+
+        for (int appWidgetId : appWidgetIds) {
+//            Intent intent = new Intent(context, MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent, 0);
+
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.sysinfo_widget);
+
+            // set ram info
+            remoteViews.setTextViewText(R.id.widget_var_available_ram, ram.getAvailableMemWithUnit());
+            remoteViews.setTextViewText(R.id.widget_var_total_ram, ram.getTotalMemWithUnit());
+
+            // set internal storage info
+            remoteViews.setTextViewText(R.id.widget_var_available_storage, is.getAvailableMemWithUnit());
+            remoteViews.setTextViewText(R.id.widget_var_total_storage, ram.getTotalMemWithUnit());
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-        }
 
-        Intent intent = new Intent(context, WidgetService.class);
-        context.startService(intent);
+            updateAppWidget(context, appWidgetManager, appWidgetId, ram, is);
+        }
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        Log.d(TAG, "#onReceive");
+
+        if (SYSINFO_UPDATE.equals(intent.getAction())) {
+            Log.d(TAG, "Sysinfo update");
+
+            ComponentName thisAppWidget = new ComponentName(context.getPackageName(), getClass().getName());
+
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            int ids[] = appWidgetManager.getAppWidgetIds(thisAppWidget);
+
+            Ram ram = new Ram((ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE));
+            InternalStorage is = new InternalStorage();
+
+            for (int appWidgetId : ids) {
+                updateAppWidget(context, appWidgetManager, appWidgetId, ram, is);
+            }
+        }
     }
 
     @Override
@@ -54,18 +109,30 @@ public class SysinfoWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         Log.d(TAG, "#onDisabled");
+
+        // cancel AlarmManager
+        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(createSysinfoUpdateIntent(context));
     }
 
+    private PendingIntent createSysinfoUpdateIntent(Context context) {
+        Intent intent = new Intent(SYSINFO_UPDATE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-    public static class WidgetService extends Service {
-        @Override
-        public void onStart(Intent intent, int si) {
+        return pendingIntent;
+    }
 
-        }
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Ram ram, InternalStorage is) {
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.sysinfo_widget);
 
-        @Override
-        public IBinder onBind(Intent intent) {
-            return null;
-        }
+        // set ram info
+        remoteViews.setTextViewText(R.id.widget_var_available_ram, ram.getAvailableMemWithUnit());
+        remoteViews.setTextViewText(R.id.widget_var_total_ram, ram.getTotalMemWithUnit());
+
+        // set internal storage info
+        remoteViews.setTextViewText(R.id.widget_var_available_storage, is.getAvailableMemWithUnit());
+        remoteViews.setTextViewText(R.id.widget_var_total_storage, is.getTotalMemWithUnit());
+
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 }
