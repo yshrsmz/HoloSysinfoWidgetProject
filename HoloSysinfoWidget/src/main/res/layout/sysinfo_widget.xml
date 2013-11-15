@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rounded_widget_bg"
+    android:background="@drawable/rounded_widget_bg_white"
     android:padding="5dp">
 
     <!-- RAM title -->
