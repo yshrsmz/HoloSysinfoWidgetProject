@@ -266,12 +266,12 @@ public class MainActivity extends Activity {
                 switch (intent.getIntExtra("plugged", 0)) {
                     case BatteryManager.BATTERY_PLUGGED_AC:
                         Log.d(TAG, "Battery Plugged: AC");
-                        title += "(USB Plugged)";
+                        title += "(AC Plugged)";
                         break;
 
                     case BatteryManager.BATTERY_PLUGGED_USB:
                         Log.d(TAG, "Battery Plugged: USB");
-                        title += "(AC Plugged)";
+                        title += "(USB Plugged)";
                         break;
                 }
 
