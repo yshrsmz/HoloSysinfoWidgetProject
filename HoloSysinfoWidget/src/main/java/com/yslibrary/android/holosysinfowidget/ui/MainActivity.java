@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,12 +60,17 @@ public class MainActivity extends Activity {
         updateMemoryInfo();
         updateStorageInfo();
 
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        boolean shouldServiceActivate = pref.getBoolean(getString(R.string.pref_key_activate_notification), true);
+
         Log.d(TAG, "send intent to update widget");
         Intent widgetUpdate = new Intent(Consts.SYSINFO_UPDATE);
         sendBroadcast(widgetUpdate);
 
-        // start battery notification service
-        startService(new Intent(getBaseContext(), BatteryNotificationService.class));
+        if (shouldServiceActivate) {
+            // start battery notification service
+            startService(new Intent(getBaseContext(), BatteryNotificationService.class));
+        }
     }
 
 
@@ -82,6 +89,8 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_settings:
+                Intent intent = new Intent(this, SettingActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

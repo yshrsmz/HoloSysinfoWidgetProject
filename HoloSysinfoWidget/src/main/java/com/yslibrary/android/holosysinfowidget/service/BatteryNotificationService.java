@@ -16,7 +16,7 @@ import com.yslibrary.android.holosysinfowidget.R;
 import com.yslibrary.android.holosysinfowidget.ui.MainActivity;
 
 /**
- * Created by A12897 on 13/11/18.
+ * Created by yshrsmz on 13/11/18.
  */
 public class BatteryNotificationService extends Service {
 
@@ -53,6 +53,12 @@ public class BatteryNotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        nm = (NotificationManager)getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel(R.string.app_name);
+
+        unregisterReceiver(broadcastReceiver);
+
         Log.d(TAG, "#onDestroy");
     }
 

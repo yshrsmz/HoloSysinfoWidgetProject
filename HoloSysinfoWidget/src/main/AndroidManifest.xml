@@ -8,6 +8,8 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="19" />
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -24,6 +26,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.SettingActivity"
+            android:label="@string/name_setting_activity"
+            android:theme="@style/AppTheme">
+
+        </activity>
+
         <receiver
             android:name=".widget.SysinfoWidget"
             android:label="@string/widget_name">
@@ -36,6 +45,12 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widgetinfo" />
+        </receiver>
+        
+        <receiver android:name=".receiver.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
         </receiver>
 
         <service android:name=".service.BatteryNotificationService"/>

@@ -3,6 +3,8 @@
 
     <string name="app_name">1_HoloSysinfoWidget</string>
 
+    <string name="name_setting_activity">Preference</string>
+
     <string name="widget_name">1_Sysinfo</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -21,4 +23,11 @@
     <string name="placeholder_storage_percentage">XX%</string>
 
     <string name="lbl_memory_used">&#160;used.</string>
+
+
+
+    <!-- Setting -->
+    <string name="pref_category_notification">Notification</string>
+    <string name="pref_key_activate_notification">activate_noti</string>
+    <string name="pref_title_activate_notification">Activate Notification</string>
 </resources>
