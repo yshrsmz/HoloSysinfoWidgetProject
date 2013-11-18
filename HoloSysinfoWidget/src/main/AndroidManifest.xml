@@ -38,6 +38,8 @@
                 android:resource="@xml/widgetinfo" />
         </receiver>
 
+        <service android:name=".service.BatteryNotificationService"/>
+
     </application>
 
 </manifest>
