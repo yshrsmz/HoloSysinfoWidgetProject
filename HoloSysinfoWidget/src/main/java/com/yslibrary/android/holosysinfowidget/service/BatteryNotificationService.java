@@ -56,6 +56,13 @@ public class BatteryNotificationService extends Service {
         Log.d(TAG, "#onDestroy");
     }
 
+    /**
+     * create notification
+     * @param context
+     * @param title
+     * @param subText
+     * @param percentage
+     */
     private static void setNotification(Context context, String title, String subText, int percentage) {
         nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent intent = new Intent(context, MainActivity.class);
@@ -174,6 +181,7 @@ public class BatteryNotificationService extends Service {
                 Log.d(TAG, "Battery Voltage: " + String.valueOf(intent.getIntExtra("voltage", 0)));
 
                 Log.d(TAG, "Battery Temperature: " + String.valueOf((float)(intent.getIntExtra("temperature", 0)) / 10));
+                subText += ", " + String.valueOf((float)(intent.getIntExtra("temperature", 0)) / 10) + "\u2103";
 
                 setNotification(context, title, subText, percentage);
             }

@@ -104,6 +104,9 @@ public class MainActivity extends Activity {
     }
 
 
+    /**
+     * update memory info
+     */
     private void updateMemoryInfo() {
         // get memory info
         ActivityManager activityManager = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
@@ -146,6 +149,9 @@ public class MainActivity extends Activity {
         Log.v(TAG, "memoryInfo.lowMemory: " + ram.isLowMemory());
     }
 
+    /**
+     * update storage info
+     */
     private void updateStorageInfo() {
         InternalStorage internalStorage = new InternalStorage();
         int availStorageColor = Color.GREEN;
@@ -179,9 +185,4 @@ public class MainActivity extends Activity {
         TextView tvStoragePercentage = (TextView)findViewById(R.id.var_storage_percentage);
         tvStoragePercentage.setText(Integer.toString(iStoragePercentage) + "%");
     }
-
-
-
-
-
 }
