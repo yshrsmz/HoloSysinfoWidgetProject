@@ -54,12 +54,12 @@ public class BatteryNotificationService extends Service {
     public void onDestroy() {
         super.onDestroy();
 
+        Log.d(TAG, "#onDestroy");
+
         nm = (NotificationManager)getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(R.string.app_name);
 
         unregisterReceiver(broadcastReceiver);
-
-        Log.d(TAG, "#onDestroy");
     }
 
     /**

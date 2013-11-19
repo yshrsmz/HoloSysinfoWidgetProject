@@ -11,5 +11,13 @@
             android:switchTextOn="ON"
             android:defaultValue="true"/>
 
+        <SwitchPreference
+            android:key="@string/pref_key_show_notification_on_boot"
+            android:title="@string/pref_title_notification_on_boot"
+            android:switchTextOff="OFF"
+            android:switchTextOn="ON"
+            android:defaultValue="true"
+            android:dependency="@string/pref_key_activate_notification"/>
+
     </PreferenceCategory>
 </PreferenceScreen>

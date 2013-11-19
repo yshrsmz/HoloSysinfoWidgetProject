@@ -17,9 +17,9 @@
     <string name="widget_lbl_storage">Storage</string>
     <string name="total_storage">Total Storage:</string>
     <string name="available_storage">Available Storage:</string>
-    <string name="placeholder_ram">X.XXGB</string>
+    <string name="placeholder_ram">-.--GB</string>
     <string name="placeholder_ram_percentage">XX%</string>
-    <string name="placeholder_storage">X.XXGB</string>
+    <string name="placeholder_storage">-.--GB</string>
     <string name="placeholder_storage_percentage">XX%</string>
 
     <string name="lbl_memory_used">&#160;used.</string>
@@ -30,4 +30,6 @@
     <string name="pref_category_notification">Notification</string>
     <string name="pref_key_activate_notification">activate_noti</string>
     <string name="pref_title_activate_notification">Activate Notification</string>
+    <string name="pref_key_show_notification_on_boot">noti_on_boot</string>
+    <string name="pref_title_notification_on_boot">Activate on boot</string>
 </resources>

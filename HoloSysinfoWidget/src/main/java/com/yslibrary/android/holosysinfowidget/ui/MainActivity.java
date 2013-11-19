@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "#onCreate");
 
         sendBroadcast(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
 
@@ -41,21 +42,21 @@ public class MainActivity extends Activity {
                     .commit();
         }
 
-        Log.v(TAG, "onCreate");
+
     }
 
     @Override
     protected void onRestart() {
         super.onResume();
 
-        Log.v(TAG, "onRestart");
+        Log.v(TAG, "#onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        Log.v(TAG, "onResume");
+        Log.v(TAG, "#onResume");
 
         updateMemoryInfo();
         updateStorageInfo();

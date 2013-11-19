@@ -25,7 +25,7 @@
             android:id="@+id/widget_var_available_ram"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="---GB"
+            android:text="@string/placeholder_ram"
             style="@style/whiteWidget"/>
 
         <TextView
@@ -40,7 +40,7 @@
             android:id="@+id/widget_var_total_ram"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="---GB"
+            android:text="@string/placeholder_ram"
             style="@style/whiteWidget"/>
     </LinearLayout>
 
@@ -62,7 +62,7 @@
             android:id="@+id/widget_var_available_storage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="---GB"
+            android:text="@string/placeholder_storage"
             style="@style/whiteWidget"/>
 
         <TextView
@@ -77,7 +77,7 @@
             android:id="@+id/widget_var_total_storage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="---GB"
+            android:text="@string/placeholder_storage"
             style="@style/whiteWidget"/>
     </LinearLayout>
 

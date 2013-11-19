@@ -22,8 +22,9 @@ public class BootReceiver extends BroadcastReceiver {
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         boolean shouldServiceActivate = pref.getBoolean(context.getResources().getString(R.string.pref_key_activate_notification), true);
+        boolean shouldServiceActivateOnBoot = pref.getBoolean(context.getResources().getString(R.string.pref_key_show_notification_on_boot), true);
 
-        if (shouldServiceActivate) {
+        if (shouldServiceActivate && shouldServiceActivateOnBoot) {
             // start battery notification service
             context.startService(new Intent(context, BatteryNotificationService.class));
         }
