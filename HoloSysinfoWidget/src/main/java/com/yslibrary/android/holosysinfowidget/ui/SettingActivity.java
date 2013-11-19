@@ -29,7 +29,6 @@ public class SettingActivity extends PreferenceActivity {
         }
     }
 
-
     public static class settingFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 

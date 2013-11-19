@@ -24,8 +24,6 @@
 
     <string name="lbl_memory_used">&#160;used.</string>
 
-
-
     <!-- Setting -->
     <string name="pref_category_notification">Notification</string>
     <string name="pref_key_activate_notification">activate_noti</string>
