@@ -1,13 +1,18 @@
 package com.yslibrary.android.holosysinfowidget.ui;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.yslibrary.android.holosysinfowidget.Consts;
 import com.yslibrary.android.holosysinfowidget.R;
 import com.yslibrary.android.holosysinfowidget.service.BatteryNotificationService;
 
@@ -32,11 +37,15 @@ public class SettingActivity extends PreferenceActivity {
     public static class settingFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+        ListPreference widgetBgPref;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.preference);
+
+            widgetBgPref = (ListPreference)findPreference(getString(R.string.pref_key_widget_bg));
         }
 
         @Override
@@ -44,13 +53,21 @@ public class SettingActivity extends PreferenceActivity {
             super.onResume();
             getPreferenceScreen().getSharedPreferences()
                     .registerOnSharedPreferenceChangeListener(this);
+            Context context = getActivity().getBaseContext();
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+            String value = sharedPreferences.getString(getString(R.string.pref_key_widget_bg), Consts.WIDGET_BG_WHITE);
+            int idx = widgetBgPref.findIndexOfValue(value);
+
+            widgetBgPref.setSummary(getString(R.string.pref_summary_widget_bg) + widgetBgPref.getEntries()[idx]);
         }
 
         @Override
         public void onPause() {
             super.onPause();
             getPreferenceScreen().getSharedPreferences()
-                    .registerOnSharedPreferenceChangeListener(this);
+                    .unregisterOnSharedPreferenceChangeListener(this);
         }
 
         @Override
@@ -67,6 +84,15 @@ public class SettingActivity extends PreferenceActivity {
                 } else {
                     getActivity().stopService(new Intent(getActivity().getBaseContext(), BatteryNotificationService.class));
                 }
+            }
+
+            if (key.equals(getString(R.string.pref_key_widget_bg))) {
+
+                String value = sharedPreferences.getString(key, Consts.WIDGET_BG_WHITE);
+                int idx = widgetBgPref.findIndexOfValue(value);
+                Log.d(TAG, "pref - key: " + key + ", value: " + value);
+
+                widgetBgPref.setSummary(getString(R.string.pref_summary_widget_bg) + widgetBgPref.getEntries()[idx]);
             }
         }
     }

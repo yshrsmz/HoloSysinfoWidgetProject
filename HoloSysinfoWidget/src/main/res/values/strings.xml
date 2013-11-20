@@ -30,4 +30,16 @@
     <string name="pref_title_activate_notification">Activate Notification</string>
     <string name="pref_key_show_notification_on_boot">noti_on_boot</string>
     <string name="pref_title_notification_on_boot">Activate on boot</string>
+
+    <string name="pref_category_widget">Widget</string>
+    <string name="pref_key_widget_bg">widget_bg</string>
+    <string name="pref_title_widget_bg">Background</string>
+    <string name="pref_dialog_title_widget_bg">Background Style</string>
+
+    <string name="rounded_widget_bg_white">rounded_widget_bg_white</string>
+    <string name="rounded_widget_bg_black">rounded_widget_bg_black</string>
+
+    <string name="pref_summary_widget_bg">Background Color:&#160;</string>
+    <string name="pref_summary_widget_bg_white">White</string>
+    <string name="pref_summary_widget_bg_black">Black</string>
 </resources>

@@ -20,4 +20,16 @@
             android:dependency="@string/pref_key_activate_notification"/>
 
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_category_widget">
+
+        <ListPreference
+            android:key="@string/pref_key_widget_bg"
+            android:title="@string/pref_title_widget_bg"
+            android:dialogTitle="@string/pref_dialog_title_widget_bg"
+            android:entries="@array/widget_bg_list"
+            android:entryValues="@array/widget_bg_list_value"
+            android:defaultValue="rounded_widget_bg_white"/>
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -39,6 +39,7 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.yslibrary.android.holosysinfowidget.SYSINFO_UPDATE"/>
+                <action android:name="com.yslibrary.android.holosysinfowidget.STYLE_UPDATE"/>
             </intent-filter>
 
             <meta-data
